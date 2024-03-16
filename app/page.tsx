@@ -23,14 +23,19 @@ import { Search } from "@/components/search"
 // import TeamSwitcher from "@/dashboard/components/team-switcher"
 import { UserNav } from "@/components/user-nav"
 import { YearSelect } from "@/components/year-select"
-import { 
-  ChatBot,
-  BotResponseArea,
-  QueryAreaWithButton 
-} from "@/components/chat-bot"
+// import { 
+//   ChatBot,
+//   BotResponseArea,
+//   QueryAreaWithButton,
+//   ChatQuery
+// } from "@/components/chat-bot"
+import ChatQuery from "@/components/chat-query"
+import { BotResponse } from "@/components/chat-response"
+import { ChatComponent } from "@/components/chat-bot"
 import { Table2021 } from "@/components/table_2021"
 import { MarketTypeSelect } from "@/components/market-type-select"
 import Link from "next/link"
+// import { useState, ChangeEvent } from "react"
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -38,6 +43,16 @@ export const metadata: Metadata = {
 }
 
 export default function DashboardPage() {
+//   const [inputValue, setInputValue] = useState('');
+
+//   const handleChatInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+//     setInputValue(e.target.value);
+//   };
+
+//   const handleChatSubmitClick = () => {
+//     console.log(inputValue);
+//   };
+  
   return (
     <>
       <div className="md:hidden">
@@ -68,6 +83,7 @@ export default function DashboardPage() {
           </div>
         </div>
         <div className="flex-1 space-y-4 p-8 pt-6">
+          {/* to select year */}
           <div className="flex items-center justify-between space-y-2">
             <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
             <div className="flex items-center space-x-2">
@@ -211,9 +227,17 @@ export default function DashboardPage() {
                     <CardTitle>Ask AI</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <BotResponseArea />
-                    <QueryAreaWithButton />
-                    {/* <ChatBot /> */}
+                    {/* <BotResponseArea /> */}
+                    {/* <QueryAreaWithButton /> */}
+                    {/* <input
+                      type="text"
+                      placeholder="What do you want to know?"
+                      value={inputValue}
+                      onChange={handleChatInputChange}
+                    />
+                    <button onClick={handleChatSubmitClick}>Send</button>  */}
+                    {/* <ChatQuery /> */}
+                    <ChatComponent />
                   </CardContent>
                 </Card>
               </div>

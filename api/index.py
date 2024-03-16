@@ -1,10 +1,28 @@
 from fastapi import FastAPI
 from fastapi import Form
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 import pandas as pd
 from langchain_community.document_loaders.csv_loader import CSVLoader
 
 
 app = FastAPI()
+
+# Set up CORS middleware, adjust origins as necessary
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"], # Or wherever your Next.js app is served
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+class Question(BaseModel):
+    question: str
+    
+class TableQuery(BaseModel):
+    year: str | int
+    market_type: str
 
 def process_str(string):
     return string.lower().replace(" ", "_")
@@ -33,8 +51,9 @@ def hello_world():
 
 @app.get("/api/top-broker")
 def top_broker(
-    year: str | int = '2021',
-    market_type: str = "open_type"
+    # year: str | int = '2021',
+    # market_type: str = "open_type"
+    table_query: TableQuery
 ):
     '''gives the top broker for given year and market-type'''
     
@@ -43,9 +62,9 @@ def top_broker(
 
 @app.post("/api/bot")
 def bot(
-    question: str = Form(None)
+    question: Question
 ):
     '''interact with chatbot'''
-    
-    return {"Query": question}
+    print(question.question)
+    return {"Query": question.question}
     
