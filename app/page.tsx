@@ -28,8 +28,9 @@ import {
   BotResponseArea,
   QueryAreaWithButton 
 } from "@/components/chat-bot"
-
-
+import { Table2021 } from "@/components/table_2021"
+import { MarketTypeSelect } from "@/components/market-type-select"
+import Link from "next/link"
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -195,10 +196,14 @@ export default function DashboardPage() {
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
                 <Card className="col-span-4">
                   <CardHeader>
-                    <CardTitle>Overview</CardTitle>
+                    <CardTitle className="pb-2">Overview</CardTitle>
+                    {/* <Card className="right-0"> */}
+                    <MarketTypeSelect />
+                    {/* </Card> */}
                   </CardHeader>
                   <CardContent className="pl-2">
-                    <Overview />
+                    {/* <Overview /> */}
+                    <Table2021 />
                   </CardContent>
                 </Card>
                 <Card className="col-span-2">
