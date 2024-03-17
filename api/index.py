@@ -1,42 +1,20 @@
-import os
+import logging
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-import pandas as pd
-from openai import OpenAI
-import logging
-from api.utils import (
-    convert_str,
-    to_json
-)
+
+from api.chatbot import chat
 from api.analytics import charts 
-from api.configs import PARENT_CSV_PATH, PARENT_TEXT_PATH
+from api.top_brokers import table
+from api.datamodels import Question, TableQuery
+
+
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler())
 logger.setLevel(logging.DEBUG)
 
 app = FastAPI()
-os.environ["OPENAI_API_KEY"] = "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"
-
-client = OpenAI()
-
-# loading data
-data_path = "../data/data.txt"
-
-
-
-parent_csv = pd.read_csv(PARENT_CSV_PATH)
-parent_csv["Year"] = parent_csv["Year"].astype(str)
-parent_csv = parent_csv.rename(mapper=convert_str, axis=1) # TODO: Checkif this is required
-
-file = client.files.create(
-    file=open(PARENT_TEXT_PATH, "rb"),
-    purpose="assistants"
-)
-# print("added file to bot.")
-logger.info("Added file to bot.")
-    
 
 # Set up CORS middleware, adjust origins as necessary
 app.add_middleware(
@@ -47,146 +25,32 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class Question(BaseModel):
-    question: str
-    
-class TableQuery(BaseModel):
-    year: str
-    marketType: str
-
-def process_str(string):
-    return string.lower().replace(" ", "_")
-
 
 @app.get("/api/python")
 def hello_world():
     return {"message": "Hello World"}
 
 @app.post("/api/top-broker")
-def top_broker(
-    table_query: TableQuery
-):
+def top_broker(table_query: TableQuery):
     '''gives the top broker for given year and market-type'''
-    
-    year = table_query.year
-    marketType = table_query.marketType
-    
-    print(f"year: {year}, market type: {marketType}")
-    data = parent_csv
-    # filter parent csv
-    if marketType in ["Open Market", "Facilities"]:
-        data = data.loc[parent_csv["market_type"] == marketType]
-    print(data.head(2))
-    data = data.loc[data["year"] == year]
-    print("after year", data.head(2))
-    
-    # sorting by GWP to get top brokers 
-    data = data.sort_values(by="gwp", ascending=False)
-    
-    # getting top 10
-    data = data.head(10)
-    
-    # resetting index
-    data["id"] = list(range(10))
-    
-    # get json of the df
-    record_dict = to_json(data)
-    print("json:", record_dict)
-    return record_dict
+    return table.top_broker(table_query)
 
 @app.get("/api/analytics/bar-graph-gwp")
 def all_brokers_bar_graph():
+    '''get the bar graph for all the brokers'''
     return charts.all_brokers_gwp_bar()
     
 @app.get("/api/analytics/pie-2021-gwp")
 def all_brokers_2021_gwp_pie():
+    '''get the pie chart of GWP for all the brokers for 2021'''
     return charts.gwp_yearwise(year="2021")
 
 @app.get("/api/analytics/pie-2022-gwp")
 def all_brokers_2022_gwp_pie():
+    '''get the pie chart of GWP for all the brokers for 2022'''
     return charts.gwp_yearwise(year="2022")
 
 @app.post("/api/bot")
 def bot(question: Question):
     '''interact with chatbot'''
-    
-    # os.environ["OPENAI_API_KEY"] = "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"
-    
-    # client = OpenAI()
-    # data_path = "../data/data.txt"
-    
-    # file = client.files.create(
-    #     file=open(data_path, "rb"),
-    #     purpose="assistants"
-    # )
-    # # print("added file to bot.")
-    # logger.info("Added file to bot.")
-    
-    # creating an assistant
-    # creating an assistant
-    assistant = client.beta.assistants.create(
-        name="Broker Manager",
-        instructions="You are a customer support chatbot. Use your knowledge base to best respond to customer queries.",
-        tools=[{"type": "retrieval"}],
-        model="gpt-3.5-turbo-0125"
-    )
-    logger.info("Created Assistant.")
-
-    # creating a thread
-    thread = client.beta.threads.create(
-        messages=[
-            {
-                "role": "user",
-                "content": question.question,
-                "file_ids": [file.id]
-            }
-        ]
-    )
-    logger.info("Created Thread")
-
-    # add the message
-    message = client.beta.threads.messages.create(
-        thread_id=thread.id,
-        role="user",
-        content=question.question
-    )
-    logger.info("Created Message.")
-
-    # create a run
-    run = client.beta.threads.runs.create(
-        thread_id=thread.id,
-        assistant_id=assistant.id
-    )
-    logger.info("Created Run.")
-
-    # retrieve the run
-    run = client.beta.threads.runs.retrieve(
-        thread_id=thread.id,
-        run_id=run.id
-    )
-    logger.info("Retrieving Run.")
-
-    # taking messages
-    thread_messages = client.beta.threads.messages.list(thread.id)
-    logger.info("Taking messages.")
-
-    answer = thread_messages.data[0].content[0].text.value
-
-    
-    for message in thread_messages.data:
-        for content in message.content:
-            print(content)
-    #         answer += content.text.value
-    
-    logger.debug("Got the answer - %s", answer)
-    logger.info("Got the answer.")
-    
-    # # modify the assistant
-    # assistant = client.beta.assistants.update(
-    #     assistant_id=assistant.id,
-    #     tools=[{"type": "retrieval"}]
-    # )          
-    # print(type(question.question))
-    # answer = ""
-    return {"Bot": str(answer)}
-    
+    return chat.bot(question)

@@ -133,7 +133,7 @@ export const PieChart2021 = () => {
                 data={data}
                 cx="50%"
                 cy="50%"
-                outerRadius={80}
+                outerRadius={120}
                 fill="#f87171"
             >
                     {
@@ -184,7 +184,7 @@ export const PieChart2022 = () => {
                 data={data}
                 cx="50%"
                 cy="50%"
-                outerRadius={80}
+                outerRadius={120}
                 fill="#8884d8"
                 >
                     {
