@@ -15,6 +15,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
+import { Chart } from "@/components/analytics/chart"
 import { CalendarDateRangePicker } from "@/components/date-range-picker"
 import { MainNav } from "@/components/main-nav"
 // import { Overview } from "@/components/overview"
@@ -39,6 +40,8 @@ import TopBrokerTableMain from "@/components/top-broker-table"
 import TableOptionsForm from "@/components/broker-table-dash/page"
 // import { useState, ChangeEvent } from "react"
 import Top10Brokers from "@/components/broker-table-dash/page"
+import TotalGWPAndPlannedGWPChart from "@/components/analytics/chart"
+
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -95,21 +98,36 @@ export default function DashboardPage() {
               {/* <YearSelect /> */}
             </div>
           </div>
-          <Tabs defaultValue="top10Brokers" className="space-y-4">
+          <Tabs defaultValue="chatbot" className="space-y-4">
             <TabsList>
+              <TabsTrigger value="chatbot">
+                AI
+              </TabsTrigger>
               <TabsTrigger value="top10Brokers">
                 Top 10 Brokers
               </TabsTrigger>
               <TabsTrigger value="analytics">
                 Analytics
               </TabsTrigger>
-              <TabsTrigger value="reports">
+              <TabsTrigger value="reports" disabled>
                 Reports
               </TabsTrigger>
               <TabsTrigger value="notifications" disabled>
                 Notifications
               </TabsTrigger>
             </TabsList>
+            <TabsContent value="chatbot" className="space-y-4">
+              <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-1">
+                  <Card className="col-span-2">
+                    <CardHeader>
+                      <CardTitle>Ask AI</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <ChatComponent />
+                    </CardContent>
+                  </Card>
+              </div>
+            </TabsContent>
             <TabsContent value="top10Brokers" className="space-y-4">
               {/* <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <Card>
@@ -240,7 +258,43 @@ export default function DashboardPage() {
               </div>
             </TabsContent>
             <TabsContent value="analytics" className="space-y-4">
+              <div className="grid gap-1 md:grid-cols-1 lg:grid-cols-1">
+                <Card>
+                  <CardHeader>
+                  <CardTitle>Cumulative Premium for 2021 & 2022</CardTitle>
+                    <CardContent>
+                      {/* <Chart /> */}
+                      <TotalGWPAndPlannedGWPChart />
+                    </CardContent>
+                  </CardHeader>
+                  {/* <Chart/> */}
+                </Card>
+              </div>
+              <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-1">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Broker Share</CardTitle>
+                  </CardHeader>
+                    <CardContent>
+                      <div>
+                        <Card>
+                          <CardHeader>
+                            <CardTitle>2021</CardTitle>
+                          </CardHeader>
+                        </Card>
+                      </div>
+                      <div>  
+                        <Card>
+                          <CardHeader>
+                            <CardTitle>2022</CardTitle>
+                          </CardHeader>
+                        </Card>
+                      </div>
+                    </CardContent>
 
+                  {/* <Chart/> */}
+                </Card>
+              </div>
             </TabsContent>
           </Tabs>
         </div>

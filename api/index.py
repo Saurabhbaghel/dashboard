@@ -1,13 +1,16 @@
 import os
 from fastapi import FastAPI
-from fastapi import Form
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import pandas as pd
-from langchain_community.document_loaders.csv_loader import CSVLoader
-import openai
 from openai import OpenAI
 import logging
+from api.utils import (
+    convert_str,
+    to_json
+)
+from api.analytics import allBrokersBarGraph 
+from api.configs import PARENT_CSV_PATH, PARENT_TEXT_PATH
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler())
@@ -21,15 +24,14 @@ client = OpenAI()
 # loading data
 data_path = "../data/data.txt"
 
-def convert_str(name: str):
-    return name.lower().replace(" ", "_")
 
-parent_csv = pd.read_csv("../data/data_dashboard.csv")
+
+parent_csv = pd.read_csv(PARENT_CSV_PATH)
 parent_csv["Year"] = parent_csv["Year"].astype(str)
 parent_csv = parent_csv.rename(mapper=convert_str, axis=1)
 
 file = client.files.create(
-    file=open(data_path, "rb"),
+    file=open(PARENT_TEXT_PATH, "rb"),
     purpose="assistants"
 )
 # print("added file to bot.")
@@ -54,11 +56,6 @@ class TableQuery(BaseModel):
 
 def process_str(string):
     return string.lower().replace(" ", "_")
-
-def to_json(data):
-    '''jsonify the dataframe'''
-    records = [record[1].to_dict() for record in data.iterrows()]
-    return records
 
 
 @app.get("/api/python")
@@ -100,6 +97,10 @@ def top_broker(
     return record_dict
 
 
+@app.get("/api/analytics/bar-graph-gwp")
+def all_brokers_bar_graph():
+    return allBrokersBarGraph.all_brokers_gwp_bar()
+    
 
 @app.post("/api/bot")
 def bot(
