@@ -26,7 +26,6 @@ export default function ChatQuery({ onUpdateResponse }) {
 
     const handleButtonClick = async () => {
     //   console.log(inputValue);
-      setInputValue('')             // to remove the input from the input box after hitting send button
       const response = await fetch('/api/bot', {
         method: 'POST',
         // body: formData,
@@ -38,8 +37,9 @@ export default function ChatQuery({ onUpdateResponse }) {
     //   console.log(response)
       const res = await response.json();
       console.log(res)
-      const botResponse = res.Query
-      onUpdateResponse(res.Query);
+      const botResponse = res.Bot
+      onUpdateResponse(res.Bot);
+      setInputValue('')             // to remove the input from the input box after hitting send button
 
     };
   

@@ -13,8 +13,8 @@ import {
 export function YearSelect() {
   return (
     <Select>
-      <SelectTrigger className="w-[280px]">
-        <SelectValue placeholder="Select a Year" />
+      <SelectTrigger className="left-0 col-span-1 w-[200px]">
+        <SelectValue placeholder="2021" />
       </SelectTrigger>
       <SelectContent>
             <SelectItem value="2021">2021</SelectItem>

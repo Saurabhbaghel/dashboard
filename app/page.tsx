@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/tabs"
 import { CalendarDateRangePicker } from "@/components/date-range-picker"
 import { MainNav } from "@/components/main-nav"
-import { Overview } from "@/components/overview"
+// import { Overview } from "@/components/overview"
 import { RecentSales } from "@/components/recent-sales"
 import { Search } from "@/components/search"
 // import TeamSwitcher from "@/dashboard/components/team-switcher"
@@ -35,7 +35,10 @@ import { ChatComponent } from "@/components/chat-bot"
 import { Table2021 } from "@/components/table_2021"
 import { MarketTypeSelect } from "@/components/market-type-select"
 import Link from "next/link"
+import TopBrokerTableMain from "@/components/top-broker-table"
+import TableOptionsForm from "@/components/broker-table-dash/page"
 // import { useState, ChangeEvent } from "react"
+import Top10Brokers from "@/components/broker-table-dash/page"
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -72,16 +75,16 @@ export default function DashboardPage() {
         />
       </div>
       <div className="hidden flex-col md:flex">
-        <div className="border-b">
+        {/* <div className="border-b">
           <div className="flex h-16 items-center px-4">
-            {/* <TeamSwitcher /> */}
-            {/* <MainNav className="mx-6" /> */}
+            <TeamSwitcher />
+            <MainNav className="mx-6" />
             <div className="ml-auto flex items-center space-x-4">
-              <Search />
-              {/* <UserNav /> */}
-            </div>
+              <Search /> 
+              <UserNav />
+            </div> 
           </div>
-        </div>
+        </div> */}
         <div className="flex-1 space-y-4 p-8 pt-6">
           {/* to select year */}
           <div className="flex items-center justify-between space-y-2">
@@ -89,24 +92,26 @@ export default function DashboardPage() {
             <div className="flex items-center space-x-2">
               {/* <CalendarDateRangePicker />
               <Button>Download</Button> */}
-              <YearSelect />
+              {/* <YearSelect /> */}
             </div>
           </div>
-          <Tabs defaultValue="overview" className="space-y-4">
+          <Tabs defaultValue="top10Brokers" className="space-y-4">
             <TabsList>
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="analytics" disabled>
+              <TabsTrigger value="top10Brokers">
+                Top 10 Brokers
+              </TabsTrigger>
+              <TabsTrigger value="analytics">
                 Analytics
               </TabsTrigger>
-              <TabsTrigger value="reports" disabled>
+              <TabsTrigger value="reports">
                 Reports
               </TabsTrigger>
               <TabsTrigger value="notifications" disabled>
                 Notifications
               </TabsTrigger>
             </TabsList>
-            <TabsContent value="overview" className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <TabsContent value="top10Brokers" className="space-y-4">
+              {/* <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
@@ -208,20 +213,12 @@ export default function DashboardPage() {
                     </p>
                   </CardContent>
                 </Card>
-              </div>
+              </div> */}
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
-                <Card className="col-span-4">
-                  <CardHeader>
-                    <CardTitle className="pb-2">Overview</CardTitle>
-                    {/* <Card className="right-0"> */}
-                    <MarketTypeSelect />
-                    {/* </Card> */}
-                  </CardHeader>
-                  <CardContent className="pl-2">
-                    {/* <Overview /> */}
-                    <Table2021 />
-                  </CardContent>
-                </Card>
+                
+                {/* Top10 Brokers Table */}
+                <Top10Brokers/>
+
                 <Card className="col-span-2">
                   <CardHeader>
                     <CardTitle>Ask AI</CardTitle>
@@ -241,6 +238,9 @@ export default function DashboardPage() {
                   </CardContent>
                 </Card>
               </div>
+            </TabsContent>
+            <TabsContent value="analytics" className="space-y-4">
+
             </TabsContent>
           </Tabs>
         </div>
