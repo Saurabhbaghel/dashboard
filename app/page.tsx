@@ -41,7 +41,7 @@ import TableOptionsForm from "@/components/broker-table-dash/page"
 // import { useState, ChangeEvent } from "react"
 import Top10Brokers from "@/components/broker-table-dash/page"
 import TotalGWPAndPlannedGWPChart from "@/components/analytics/chart"
-
+import { PieChart2021, PieChart2022 } from "@/components/analytics/pie-chart"
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -276,20 +276,30 @@ export default function DashboardPage() {
                     <CardTitle>Broker Share</CardTitle>
                   </CardHeader>
                     <CardContent>
-                      <div>
-                        <Card>
-                          <CardHeader>
-                            <CardTitle>2021</CardTitle>
-                          </CardHeader>
-                        </Card>
-                      </div>
-                      <div>  
-                        <Card>
-                          <CardHeader>
-                            <CardTitle>2022</CardTitle>
-                          </CardHeader>
-                        </Card>
-                      </div>
+                      <div className="grid lg:grid-cols-2 md:grid-cols-1 gap-4">
+                        <div className="col-span-1">
+                          <Card>
+                            <CardHeader>
+                              <CardTitle>2021</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              {/* Pie chart 2021 */}
+                              <PieChart2021 />
+                            </CardContent>
+                          </Card>
+                        </div>
+                        <div>  
+                          <Card>
+                            <CardHeader>
+                              <CardTitle>2022</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              {/* Pie Chart 2022 */}
+                              <PieChart2022 />
+                            </CardContent>
+                          </Card>
+                        </div>
+                      </div>  
                     </CardContent>
 
                   {/* <Chart/> */}

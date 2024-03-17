@@ -9,7 +9,7 @@ from api.utils import (
     convert_str,
     to_json
 )
-from api.analytics import allBrokersBarGraph 
+from api.analytics import charts 
 from api.configs import PARENT_CSV_PATH, PARENT_TEXT_PATH
 
 logger = logging.getLogger(__name__)
@@ -28,7 +28,7 @@ data_path = "../data/data.txt"
 
 parent_csv = pd.read_csv(PARENT_CSV_PATH)
 parent_csv["Year"] = parent_csv["Year"].astype(str)
-parent_csv = parent_csv.rename(mapper=convert_str, axis=1)
+parent_csv = parent_csv.rename(mapper=convert_str, axis=1) # TODO: Checkif this is required
 
 file = client.files.create(
     file=open(PARENT_TEXT_PATH, "rb"),
@@ -62,8 +62,6 @@ def process_str(string):
 def hello_world():
     return {"message": "Hello World"}
 
-
-
 @app.post("/api/top-broker")
 def top_broker(
     table_query: TableQuery
@@ -96,16 +94,20 @@ def top_broker(
     print("json:", record_dict)
     return record_dict
 
-
 @app.get("/api/analytics/bar-graph-gwp")
 def all_brokers_bar_graph():
-    return allBrokersBarGraph.all_brokers_gwp_bar()
+    return charts.all_brokers_gwp_bar()
     
+@app.get("/api/analytics/pie-2021-gwp")
+def all_brokers_2021_gwp_pie():
+    return charts.gwp_yearwise(year="2021")
+
+@app.get("/api/analytics/pie-2022-gwp")
+def all_brokers_2022_gwp_pie():
+    return charts.gwp_yearwise(year="2022")
 
 @app.post("/api/bot")
-def bot(
-    question: Question
-):
+def bot(question: Question):
     '''interact with chatbot'''
     
     # os.environ["OPENAI_API_KEY"] = "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"
