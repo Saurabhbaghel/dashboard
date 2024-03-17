@@ -29,7 +29,12 @@ if "Broker Manager 2" not in my_assistants_ids:
     # creating an assistant
     assistant = client.beta.assistants.create(
         name="Broker Manager 2",
-        instructions="You are a customer support chatbot. Use your knowledge base to best respond to customer queries.",
+        instructions='''You are assistant to Broker Manager. \
+            Use your knowledge base to best respond to Manager's queries.\
+                    Only answer according to the given knowledge base.\
+                        For unrelated queries, politely respond that you only have the knowledge about the Brokers.\
+                            In any case, never mention about any file that was shared with you. 
+                ''',
         tools=[{"type": "retrieval"}],
         model="gpt-3.5-turbo-0125"
     )
@@ -71,11 +76,18 @@ def bot(question: Question):
     logger.info("Created Run.")
 
     # retrieve the run
-    run = client.beta.threads.runs.retrieve(
-        thread_id=thread.id,
-        run_id=run.id
-    )
     logger.info("Retrieving Run.")
+
+    while run.status != "completed":
+        keep_retrieving_run = client.beta.threads.runs.retrieve(
+            thread_id=thread.id,
+            run_id=run.id
+        )
+        logger.info("Run status: %s", keep_retrieving_run.status)
+
+        if keep_retrieving_run.status == "completed":
+            print("\n")
+            break
 
     # taking messages
     thread_messages = client.beta.threads.messages.list(thread.id)
@@ -91,13 +103,6 @@ def bot(question: Question):
     
     logger.debug("Got the answer - %s", answer)
     logger.info("Got the answer.")
-    
-    # # modify the assistant
-    # assistant = client.beta.assistants.update(
-    #     assistant_id=assistant.id,
-    #     tools=[{"type": "retrieval"}]
-    # )          
-    # print(type(question.question))
-    # answer = ""
+
     return {"Bot": str(answer)}
     
