@@ -6,6 +6,7 @@
 1. TypeScript
 2. React 
 3. Shadcn/ui (https://github.com/shadcn-ui/ui)
+4. Tailwind CSS
 
 #### For Charts:
 1. Recharts (https://recharts.org/en-US/)
