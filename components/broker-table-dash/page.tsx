@@ -21,6 +21,14 @@ export default function Top10Brokers() {
     setTableResponse(tableAPIResponse);
   };
 
+  useEffect(() => {
+    const fetchDefaultData = async () => {
+      const defaultData = await getDefaultTableData();
+      updateTableResponse(defaultData);
+    };
+
+    fetchDefaultData();
+  }, []);
 return (
   <Card className="col-span-4">
   <CardHeader>
@@ -39,4 +47,17 @@ return (
   </CardContent>
 </Card>
 );
+}
+
+async function getDefaultTableData() {
+  const response = await fetch('/api/top-broker', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: '{"year": "2021", "marketType": "Combined"}'
+  });
+  const data = await response.json();
+  return data;
+
 }

@@ -110,7 +110,7 @@ export default function DashboardPage() {
                       <CardHeader>
                         <CardTitle>Ask AI</CardTitle>
                       </CardHeader>
-                      <div>
+                      <div className="h-full">
                         <CardContent>
                           <ChatComponent />
                         </CardContent>
@@ -123,11 +123,11 @@ export default function DashboardPage() {
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
                 {/* Top10 Brokers Table */}
                 <Top10Brokers/>
-                <Card className=" grid col-span-2">
+                {/* <Card className=" grid col-span-2">
                   <CardHeader>
                     <CardTitle>Ask AI</CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent> */}
                     {/* <BotResponseArea /> */}
                     {/* <QueryAreaWithButton /> */}
                     {/* <input
@@ -138,9 +138,9 @@ export default function DashboardPage() {
                     />
                     <button onClick={handleChatSubmitClick}>Send</button>  */}
                     {/* <ChatQuery /> */}
-                    <ChatComponent />
+                    {/* <ChatComponent />
                   </CardContent>
-                </Card>
+                </Card> */}
               </div>
             </TabsContent>
             <TabsContent value="analytics" className="space-y-4">
@@ -189,6 +189,16 @@ export default function DashboardPage() {
                     </CardContent>
 
                   {/* <Chart/> */}
+                </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>
+                      Broker
+                    </CardTitle>
+                  </CardHeader>
+                  {/* <CardContent>
+
+                  </CardContent> */}
                 </Card>
               </div>
             </TabsContent>

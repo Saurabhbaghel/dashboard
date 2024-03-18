@@ -3,6 +3,7 @@
 import React, { FormEvent, useState, ChangeEvent } from "react";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Loader2 } from "lucide-react"
 
   
 
@@ -14,48 +15,109 @@ import { Input } from "@/components/ui/input"
 //   );
 // }
 
+
 export default function ChatQuery({ onUpdateResponse }) {
-    const [inputValue, setInputValue] = useState('');
-    
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-      setInputValue(e.target.value);
-    };
-    
-    let formData = new FormData();
-    formData.append('question', inputValue)
-
-    const handleButtonClick = async () => {
-    //   console.log(inputValue);
-      const response = await fetch('/api/bot', {
-        method: 'POST',
-        // body: formData,
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({question: inputValue})
-      })
-    //   console.log(response)
-      const res = await response.json();
-      console.log(res)
-      const botResponse = res.Bot
-      onUpdateResponse(res.Bot);
-      setInputValue('')             // to remove the input from the input box after hitting send button
-
-    };
+  const [inputValue, setInputValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false); // Add a loading state
   
-    return (
-      <div className="flex w-full max-w-sm items-center space-x-2">
-        <Input
-          type="text"
-          placeholder="What do you want to know?"
-          value={inputValue}
-          onChange={handleInputChange}
-          name="question"
-        />
-        <Button onClick={handleButtonClick}>Send</Button>
+  const handleInputChange = (e) => {
+      setInputValue(e.target.value);
+  };
+  
+  const handleButtonClick = async () => {
+      setIsLoading(true); // Start loading
+      try {
+          const response = await fetch('/api/bot', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ question: inputValue })
+          });
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          const res = await response.json();
+          console.log(res);
+          onUpdateResponse(inputValue, res.Bot);
+          setInputValue(''); // Clear the input box after sending
+      } catch (error) {
+          console.error("Failed to fetch: ", error);
+      } finally {
+          setIsLoading(false); // Stop loading regardless of response success
+      }
+  };
+
+  return (
+      <div className="flex w-full  space-x-2">
+          <Input
+              type="text"
+              placeholder="Query"
+              value={inputValue}
+              onChange={handleInputChange}
+              name="question"
+          />
+          {isLoading ? (
+              <ButtonLoading />
+          ) : (
+              <Button onClick={handleButtonClick} className="h-full w-40">Send</Button>
+          )}
       </div>
-    );
-  }
+  );
+}
+ 
+ 
+export function ButtonLoading() {
+  return (
+    <Button disabled>
+      <Loader2 className="mr-2 h-full w-4 animate-spin fill=currentColor" />
+      Please wait
+    </Button>
+  )
+}
+
+// export default function ChatQuery({ onUpdateResponse }) {
+//     const [inputValue, setInputValue] = useState('');
+    
+//     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+//       setInputValue(e.target.value);
+//     };
+    
+//     let formData = new FormData();
+//     formData.append('question', inputValue)
+
+//     const handleButtonClick = async () => {
+//     //   console.log(inputValue);
+//       const response = await fetch('/api/bot', {
+//         method: 'POST',
+//         // body: formData,
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({question: inputValue})
+//       })
+//     //   console.log(response)
+//       const res = await response.json();
+//       console.log(res)
+//       const botResponse = res.Bot
+//       onUpdateResponse(res.Bot);
+//       setInputValue('')             // to remove the input from the input box after hitting send button
+
+//     };
+  
+//     return (
+//       <div className="flex w-full max-w-sm items-center space-x-2">
+//         <Input
+//           type="text"
+//           placeholder="What do you want to know?"
+//           value={inputValue}
+//           onChange={handleInputChange}
+//           name="question"
+//         />
+//         <Button onClick={handleButtonClick}>Send</Button>
+//       </div>
+//     );
+//   }
 
 
 // export default function QueryAreaWithButton() {

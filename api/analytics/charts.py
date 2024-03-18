@@ -46,3 +46,10 @@ def gwp_yearwise(year: str):
     
     return result
 
+def broker(name: str):
+    
+    # filter data for the particular broker
+    data = filter_df(parent_csv, "Broker Name", name)
+    
+    # remove the Broker Name column
+    data.loc

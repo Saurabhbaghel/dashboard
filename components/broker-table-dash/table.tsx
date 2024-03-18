@@ -15,8 +15,8 @@ export function TableComponent( {brokersList} ) {
         <TableCaption>Top 10 Brokers</TableCaption>
         <TableHeader>
             <TableRow>
-            <TableHead className="w-[100px]">ID</TableHead>
-            <TableHead>Year</TableHead>
+            <TableHead className="w-[100px]">Year</TableHead>
+            {/* <TableHead>Year</TableHead> */}
             <TableHead>Broker Name</TableHead>
             <TableHead>GWP</TableHead>
             <TableHead>Planned GWP</TableHead>
@@ -27,8 +27,8 @@ export function TableComponent( {brokersList} ) {
         <TableBody>
             {brokersList.map((broker) => (
             <TableRow>
-                <TableCell className="font-medium">{broker.id}</TableCell>
-                <TableCell >{broker.year}</TableCell>
+                <TableCell className="font-medium">{broker.year}</TableCell>
+                {/* <TableCell >{broker.year}</TableCell> */}
                 <TableCell>{broker.broker_name}</TableCell>
                 <TableCell>{broker.gwp}</TableCell>
                 <TableCell>{broker.planned_gwp}</TableCell>
