@@ -15,9 +15,11 @@ export function ChatComponent() {
     };
 
     return (
-        <div>
-            <BotResponse displayedText={botResponse} />
-            <ChatQuery onUpdateResponse={updateBotResponse} />
+        <div className="grid grid-rows-3">
+            <div className="grid row-span-2 w-full h-full py-5 size-100">
+                <BotResponse displayedText={botResponse} />
+            </div>
+                <ChatQuery onUpdateResponse={updateBotResponse} />
         </div>
     )
 }

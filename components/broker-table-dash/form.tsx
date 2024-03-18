@@ -94,68 +94,78 @@ export function SelectForm( {updateTable} ) {
   };
 
   return(
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
-        <div>
-          <FormField
-            control={form.control}
-            name="year"
-            render={({ field }) => (
-              <FormItem className="w-[100px]">
-                {/* <FormLabel>Year</FormLabel> */}
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="2021" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="2021">2021</SelectItem>
-                    <SelectItem value="2022">2022</SelectItem>
-                    {/* <SelectItem value="m@support.com">m@support.com</SelectItem> */}
-                  </SelectContent>
-                </Select>
-                {/* <FormDescription>
-                  You can manage email addresses in your{" "}
-                  <Link href="/examples/forms">email settings</Link>.
-                </FormDescription>
-                <FormMessage /> */}
-              </FormItem>
-            )}
-          />
-        </div>  
-        <div>
-          <FormField
-            control={form.control}
-            name="marketType"
-            render={({ field }) => (
-              <FormItem className="w-[200px]">
-                {/* <FormLabel>Year</FormLabel> */}
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Combined" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="Combined">Combined</SelectItem>
-                    <SelectItem value="Open Market">Open Market</SelectItem>
-                    <SelectItem value="Facilities">Facilities</SelectItem>
-                    {/* <SelectItem value="m@support.com">m@support.com</SelectItem> */}
-                  </SelectContent>
-                </Select>
-                {/* <FormDescription>
-                  You can manage email addresses in your{" "}
-                  <Link href="/examples/forms">email settings</Link>.
-                </FormDescription>
-                <FormMessage /> */}
-              </FormItem>
-            )}
-          />
+      <Form {...form}>
+        {/* <div className="grid grid-cols-3 gap-4"> */}
+
+        <form onSubmit={form.handleSubmit(onSubmit)} >
+          <div className="grid grid-cols-3 gap-4">
+            <FormField
+              control={form.control}
+              name="year"
+              render={({ field }) => (
+                <div className="w-[150px]">
+                <FormItem className="grid">
+                  {/* <FormLabel>Year</FormLabel> */}
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="2021" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="2021">2021</SelectItem>
+                      <SelectItem value="2022">2022</SelectItem>
+                      {/* <SelectItem value="m@support.com">m@support.com</SelectItem> */}
+                    </SelectContent>
+                  </Select>
+                  {/* <FormDescription>
+                    You can manage email addresses in your{" "}
+                    <Link href="/examples/forms">email settings</Link>.
+                  </FormDescription>
+                  <FormMessage /> */}
+                </FormItem>
+                </div>
+              )}
+            />
+          
+            <FormField
+              control={form.control}
+              name="marketType"
+              render={({ field }) => (
+                <FormItem >
+                  {/* <FormLabel>Year</FormLabel> */}
+                <div className="w-[150px]">
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Combined" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="Combined">Combined</SelectItem>
+                      <SelectItem value="Open Market">Open Market</SelectItem>
+                      <SelectItem value="Facilities">Facilities</SelectItem>
+                      {/* <SelectItem value="m@support.com">m@support.com</SelectItem> */}
+                    </SelectContent>
+                  </Select>
+                </div>  
+                  {/* <FormDescription>
+                    You can manage email addresses in your{" "}
+                    <Link href="/examples/forms">email settings</Link>.
+                  </FormDescription>
+                  <FormMessage /> */}
+                </FormItem>
+              
+              
+              )}
+            />
+          <div className="w-[100px]">
+            <Button type="submit">Submit</Button>
+          </div>
         </div>
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+        </form>
+        {/* </div> */}
+      </Form>
   )
 }
   

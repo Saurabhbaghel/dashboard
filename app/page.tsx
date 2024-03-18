@@ -104,22 +104,26 @@ export default function DashboardPage() {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="chatbot" className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-1">
-                  <Card className="col-span-2">
-                    <CardHeader>
-                      <CardTitle>Ask AI</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <ChatComponent />
-                    </CardContent>
-                  </Card>
+              <div className="grid grid-cols-6 gap-4">
+                  <div className="cols-start-1 col-span-4 shadow-lg">
+                    <Card className="grid col-span-1 rows-span-1 h-full">
+                      <CardHeader>
+                        <CardTitle>Ask AI</CardTitle>
+                      </CardHeader>
+                      <div>
+                        <CardContent>
+                          <ChatComponent />
+                        </CardContent>
+                      </div>
+                    </Card>
+                  </div>
               </div>
             </TabsContent>
             <TabsContent value="top10Brokers" className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
                 {/* Top10 Brokers Table */}
                 <Top10Brokers/>
-                <Card className="col-span-2">
+                <Card className=" grid col-span-2">
                   <CardHeader>
                     <CardTitle>Ask AI</CardTitle>
                   </CardHeader>
